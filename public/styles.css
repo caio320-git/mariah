@@ -496,9 +496,9 @@ input::placeholder { color: #b99a9f; }
 }
 .flu-shield {
   position: absolute;
-  left: 57.5%;
-  top: 1%;
-  width: 23%;
+  left: 61.5%; /* centralizado onde ficava o coração */
+  top: 4%;
+  width: 16%;
   z-index: 2;
   pointer-events: none;
   transform-origin: 50% 30%;
