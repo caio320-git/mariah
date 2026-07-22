@@ -59,13 +59,13 @@
       <button class="btn-back" data-back="name">← voltar</button>
     </section>
 
-    <!-- PASSO 3: quantidade -->
+    <!-- PASSO 3: quantidade total -->
     <section class="step" data-step="count">
       <h2>Que alegria! 🎠</h2>
-      <p class="lead">Além de você, quantas pessoas vêm junto?<br><span class="hint">adultos e crianças contam ✨</span></p>
+      <p class="lead">Quantas pessoas vão, <strong>no total</strong>?<br><span class="hint">contando você — adultos e crianças ✨</span></p>
       <div class="stepper">
         <button type="button" id="btn-minus" aria-label="menos um">−</button>
-        <div class="count" id="count-display">0</div>
+        <div class="count" id="count-display">1</div>
         <button type="button" id="btn-plus" aria-label="mais um">+</button>
       </div>
       <p class="hint" id="count-hint">só eu mesmo(a) 💃</p>
@@ -73,10 +73,10 @@
       <button class="btn-back" data-back="attend">← voltar</button>
     </section>
 
-    <!-- PASSO 4: nomes dos acompanhantes -->
+    <!-- PASSO 4: nome de todos -->
     <section class="step" data-step="guests">
-      <h2>Quem vem com você?</h2>
-      <p class="lead">Escreva o nome de cada acompanhante,<br>para a lista da portaria do circo. 🎟️</p>
+      <h2>Quem são os convidados?</h2>
+      <p class="lead">Confira seu nome e escreva o dos demais,<br>para a lista da portaria do circo. 🎟️</p>
       <div class="guest-list" id="guest-list"></div>
       <button class="btn btn-primary" id="btn-guests">Continuar</button>
       <button class="btn-back" data-back="count">← voltar</button>
@@ -132,7 +132,8 @@
 
   const $ = (s) => document.querySelector(s);
   const steps = document.querySelectorAll('.step');
-  const state = { name: '', attending: null, count: 0, guests: [] };
+  // count = total de pessoas (incluindo quem responde)
+  const state = { name: '', attending: null, count: 1, guests: [] };
 
   /* ---------- progresso (estrelinhas) ---------- */
   const progressEl = $('#progress');
@@ -172,30 +173,33 @@
   $('#btn-yes').addEventListener('click', () => { state.attending = true; goTo('count'); });
   $('#btn-no').addEventListener('click', () => { state.attending = false; goTo('decline'); });
 
-  /* ---------- passo 3: contador ---------- */
+  /* ---------- passo 3: contador (total de pessoas) ---------- */
   const HINTS = ['só eu mesmo(a) 💃', 'nós dois 💕', 'nosso trio 🎠', 'nossa turminha 🎪'];
   function renderCount() {
     $('#count-display').textContent = state.count;
-    $('#count-hint').textContent = HINTS[Math.min(state.count, 3)];
+    $('#count-hint').textContent = HINTS[Math.min(state.count - 1, 3)];
   }
-  $('#btn-minus').addEventListener('click', () => { state.count = Math.max(0, state.count - 1); renderCount(); });
-  $('#btn-plus').addEventListener('click', () => { state.count = Math.min(15, state.count + 1); renderCount(); });
+  $('#btn-minus').addEventListener('click', () => { state.count = Math.max(1, state.count - 1); renderCount(); });
+  $('#btn-plus').addEventListener('click', () => { state.count = Math.min(16, state.count + 1); renderCount(); });
   $('#btn-count').addEventListener('click', () => {
-    state.guests = state.guests.slice(0, state.count);
-    if (state.count === 0) { buildReview(); goTo('review'); return; }
+    state.guests = state.guests.slice(0, state.count - 1);
+    if (state.count === 1) { state.guests = []; buildReview(); goTo('review'); return; }
     buildGuestInputs();
     goTo('guests');
   });
 
-  /* ---------- passo 4: nomes ---------- */
+  /* ---------- passo 4: nome de todos na mesma tela ---------- */
   function buildGuestInputs() {
     const list = $('#guest-list');
     list.innerHTML = '';
+    const values = [state.name, ...state.guests];
     for (let i = 0; i < state.count; i++) {
+      const label = i === 0 ? 'Você' : `Convidado ${i + 1}`;
+      const val = values[i] ? values[i].replace(/"/g, '&quot;') : '';
       const wrap = document.createElement('div');
       wrap.innerHTML = `
-        <label class="field-label" for="guest-${i}">Acompanhante ${i + 1}</label>
-        <input type="text" id="guest-${i}" placeholder="Nome completo" value="${state.guests[i] ? state.guests[i].replace(/"/g, '&quot;') : ''}" enterkeyhint="${i === state.count - 1 ? 'done' : 'next'}">`;
+        <label class="field-label" for="guest-${i}">${label}</label>
+        <input type="text" id="guest-${i}" placeholder="Nome completo" value="${val}" enterkeyhint="${i === state.count - 1 ? 'done' : 'next'}">`;
       list.appendChild(wrap);
     }
   }
@@ -203,10 +207,14 @@
     const names = [];
     for (let i = 0; i < state.count; i++) {
       const v = document.getElementById('guest-' + i).value.replace(/\s+/g, ' ').trim();
-      if (v.length < 2) { showError(`Preencha o nome do acompanhante ${i + 1}. 🙂`); return; }
+      if (v.length < 2) {
+        showError(i === 0 ? 'Confira o seu nome, por favor. 🙂' : `Preencha o nome do convidado ${i + 1}. 🙂`);
+        return;
+      }
       names.push(v);
     }
-    state.guests = names;
+    state.name = names[0];
+    state.guests = names.slice(1);
     buildReview();
     goTo('review');
   });
@@ -221,7 +229,7 @@
     chips.innerHTML = `<span class="chip main">${escapeHtml(state.name)}</span>` +
       state.guests.map((g) => `<span class="chip">${escapeHtml(g)}</span>`).join('');
   }
-  $('#btn-review-back').addEventListener('click', () => goTo(state.count > 0 ? 'guests' : 'count'));
+  $('#btn-review-back').addEventListener('click', () => goTo(state.count > 1 ? 'guests' : 'count'));
 
   function escapeHtml(s) {
     return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

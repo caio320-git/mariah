@@ -487,6 +487,69 @@ input::placeholder { color: #b99a9f; }
   40% { transform: translateX(-50%) scale(1.16); }
 }
 
+/* ---------- easter eggs ---------- */
+.egg-hotspot {
+  position: absolute;
+  pointer-events: auto;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.flu-shield {
+  position: absolute;
+  left: 57.5%;
+  top: 1%;
+  width: 23%;
+  z-index: 2;
+  pointer-events: none;
+  transform-origin: 50% 30%;
+  animation: shieldPop .55s cubic-bezier(.34, 1.56, .64, 1);
+  filter: drop-shadow(0 2px 4px rgba(74, 53, 56, .25));
+}
+.flu-shield img, .flu-shield svg { width: 100%; height: auto; display: block; }
+@keyframes shieldPop {
+  from { transform: scale(0) rotate(-14deg); }
+  to   { transform: scale(1) rotate(0); }
+}
+.orange-ball {
+  position: absolute;
+  z-index: 2;
+  left: 90%;   /* ao lado direito da menina, fora do bambolê */
+  top: 72%;
+  width: 13%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, #ffc27d 0 18%, #f97316 55%, #c2410c);
+  box-shadow: 0 3px 6px rgba(74, 53, 56, .3);
+  pointer-events: none;
+  animation: ballDrop 1s ease-in forwards;
+  transition: opacity .25s;
+}
+@keyframes ballDrop {
+  0%   { transform: translateY(-480%); opacity: 0; }
+  12%  { opacity: 1; }
+  55%  { transform: translateY(0); }
+  71%  { transform: translateY(-42%); }
+  84%  { transform: translateY(0); }
+  93%  { transform: translateY(-12%); }
+  100% { transform: translateY(0); }
+}
+.dog-run {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  animation: dogRun 2s .12s ease-in forwards;
+}
+.dog-run img { width: 100%; display: block; }
+@keyframes dogRun {
+  0%   { transform: translate(0, 0); }
+  16%  { transform: translate(3%, -16%) rotate(-6deg); }
+  30%  { transform: translate(calc(var(--run-dist) * .18), -2%) rotate(4deg); }
+  50%  { transform: translate(calc(var(--run-dist) * .42), -12%) rotate(-4deg); }
+  70%  { transform: translate(calc(var(--run-dist) * .68), 0) rotate(4deg); }
+  86%  { transform: translate(calc(var(--run-dist) * .85), -8%) rotate(-3deg); }
+  100% { transform: translate(var(--run-dist), 2%) rotate(2deg); }
+}
+
 /* balões clicáveis + estouro */
 .balloon { pointer-events: auto; cursor: pointer; }
 .pop-bit {
@@ -504,19 +567,20 @@ input::placeholder { color: #b99a9f; }
 /* entrada da aniversariante na celebração 🎉 */
 .mariah-wrap {
   position: fixed;
-  left: 50%;
+  /* alinhada à borda direita do card, sem cobrir o conteúdo central */
+  right: clamp(6px, calc(50% - 290px), 50vw);
   bottom: 0;
   z-index: 4;
   pointer-events: none;
-  transform: translate(-50%, 108%);
+  transform: translateY(108%);
   animation: mariahUp 1s .15s cubic-bezier(.32, 1.24, .5, 1) forwards;
 }
 @keyframes mariahUp {
-  to { transform: translate(-50%, 4%); }
+  to { transform: translateY(4%); }
 }
 .mariah-wrap img {
   display: block;
-  height: min(40vh, 380px);
+  height: min(36vh, 350px);
   width: auto;
   filter: drop-shadow(0 12px 26px rgba(74, 53, 56, .3));
   animation: mariahSway 3.6s 1.2s ease-in-out infinite alternate;
