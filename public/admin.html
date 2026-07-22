@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirmações — Le Cirque de Mariah</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="/assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wine: #ab0831;
+    --rose: #e6c9ce;
+    --blue: #bed5e4;
+    --cream: #f6eee0;
+    --paper: #fffdf7;
+    --ink: #4a3538;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Poppins', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; }
+
+  header {
+    background: var(--wine);
+    color: #fff5ec;
+    padding: 18px clamp(16px, 4vw, 40px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  header h1 { font-family: 'Abril Fatface', serif; font-weight: 400; font-size: 1.35rem; }
+  header .actions { display: flex; gap: 10px; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 26px clamp(14px, 4vw, 40px) 60px; }
+
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 22px; }
+  .stat {
+    background: var(--paper);
+    border-radius: 16px;
+    padding: 16px 18px;
+    box-shadow: 0 6px 18px rgba(74, 53, 56, .07);
+    border-top: 4px solid var(--rose);
+  }
+  .stat.highlight { border-top-color: var(--wine); }
+  .stat .num { font-family: 'Abril Fatface', serif; font-size: 2rem; color: var(--wine); line-height: 1.1; }
+  .stat .lbl { font-size: .78rem; font-weight: 500; color: #8d6f75; text-transform: uppercase; letter-spacing: .05em; }
+
+  .toolbar { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+  .toolbar input {
+    flex: 1;
+    min-width: 220px;
+    font-family: 'Poppins', sans-serif;
+    font-size: .95rem;
+    padding: 12px 16px;
+    border: 1.6px solid var(--rose);
+    border-radius: 12px;
+    background: var(--paper);
+    outline: none;
+  }
+  .toolbar input:focus { border-color: var(--wine); }
+
+  .btn {
+    font-family: 'Poppins', sans-serif;
+    font-size: .9rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 999px;
+    padding: 11px 20px;
+    cursor: pointer;
+    transition: transform .15s, opacity .15s;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-wine { background: var(--wine); color: #fff5ec; }
+  .btn-ghost { background: rgba(255, 245, 236, .16); color: #fff5ec; border: 1.4px solid rgba(255, 245, 236, .5); }
+  .btn-soft { background: var(--rose); color: #7c2b3c; }
+
+  .list { display: flex; flex-direction: column; gap: 10px; }
+  .item {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 14px 18px;
+    box-shadow: 0 4px 14px rgba(74, 53, 56, .06);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .item .who { flex: 1; min-width: 200px; }
+  .item .who .nm { font-weight: 600; font-size: 1rem; }
+  .item .who .gs { font-size: .84rem; color: #8d6f75; margin-top: 2px; line-height: 1.5; }
+  .badge {
+    font-size: .75rem;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 5px 12px;
+    white-space: nowrap;
+  }
+  .badge.yes { background: #ddebd8; color: #33642d; }
+  .badge.no { background: var(--rose); color: #93354a; }
+  .badge.people { background: var(--blue); color: #2e4d63; }
+  .meta { font-size: .72rem; color: #b39399; white-space: nowrap; }
+  .del { background: none; border: none; color: #c9a4ab; font-size: 1.05rem; cursor: pointer; padding: 4px 8px; }
+  .del:hover { color: var(--wine); }
+
+  .empty { text-align: center; color: #8d6f75; padding: 40px 10px; font-size: .95rem; }
+
+  /* login */
+  .login-overlay {
+    position: fixed; inset: 0;
+    background: var(--cream);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10; padding: 20px;
+  }
+  .login-card {
+    background: var(--paper);
+    border-radius: 22px;
+    box-shadow: 0 20px 50px -14px rgba(171, 8, 49, .25);
+    padding: 34px 28px;
+    width: 100%; max-width: 380px;
+    text-align: center;
+  }
+  .login-card img { width: 180px; max-width: 70%; margin-bottom: 8px; }
+  .login-card h2 { font-family: 'Abril Fatface', serif; font-weight: 400; color: var(--wine); margin-bottom: 16px; }
+  .login-card input {
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    padding: 13px 16px;
+    border: 1.6px solid var(--rose);
+    border-radius: 12px;
+    background: #fdf7ec;
+    outline: none;
+    text-align: center;
+  }
+  .login-card input:focus { border-color: var(--wine); }
+  .login-card .btn { width: 100%; margin-top: 14px; padding: 13px; }
+  .login-err { color: var(--wine); font-size: .85rem; margin-top: 10px; display: none; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="login-overlay" id="login">
+  <div class="login-card">
+    <img src="/assets/logo.png" alt="Le Cirque de Mariah">
+    <h2>Área da produção</h2>
+    <input type="password" id="inp-pass" placeholder="Senha" autocomplete="current-password">
+    <button class="btn btn-wine" id="btn-login">Entrar</button>
+    <p class="login-err" id="login-err">Senha incorreta.</p>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <header>
+    <h1>Confirmações 🎪</h1>
+    <div class="actions">
+      <button class="btn btn-ghost" id="btn-export">Exportar CSV</button>
+      <button class="btn btn-ghost" id="btn-logout">Sair</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="stats" id="stats"></div>
+    <div class="toolbar">
+      <input type="text" id="inp-search" placeholder="Pesquisar por nome (convidado ou acompanhante)…">
+    </div>
+    <div class="list" id="list"></div>
+  </div>
+</div>
+
+<script>
+  const $ = (s) => document.querySelector(s);
+  let token = sessionStorage.getItem('mariah_token') || '';
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  async function login() {
+    const password = $('#inp-pass').value;
+    const res = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password }),
+    });
+    if (!res.ok) { $('#login-err').style.display = 'block'; return; }
+    const data = await res.json();
+    token = data.token;
+    sessionStorage.setItem('mariah_token', token);
+    enter();
+  }
+  $('#btn-login').addEventListener('click', login);
+  $('#inp-pass').addEventListener('keydown', (e) => { if (e.key === 'Enter') login(); });
+
+  function enter() {
+    $('#login').classList.add('hidden');
+    $('#app').classList.remove('hidden');
+    load();
+  }
+
+  $('#btn-logout').addEventListener('click', () => {
+    sessionStorage.removeItem('mariah_token');
+    location.reload();
+  });
+
+  $('#btn-export').addEventListener('click', () => {
+    window.location.href = '/api/admin/export?token=' + encodeURIComponent(token);
+  });
+
+  let searchTimer;
+  $('#inp-search').addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(load, 250);
+  });
+
+  async function load() {
+    const q = $('#inp-search').value.trim();
+    const res = await fetch('/api/admin/rsvps?q=' + encodeURIComponent(q), {
+      headers: { Authorization: 'Bearer ' + token },
+    });
+    if (res.status === 401) { sessionStorage.removeItem('mariah_token'); location.reload(); return; }
+    const data = await res.json();
+    renderStats(data.stats);
+    renderList(data.items);
+  }
+
+  function renderStats(s) {
+    $('#stats').innerHTML = `
+      <div class="stat highlight"><div class="num">${s.totalPeople}</div><div class="lbl">pessoas confirmadas</div></div>
+      <div class="stat"><div class="num">${s.confirmedResponses}</div><div class="lbl">respostas “sim”</div></div>
+      <div class="stat"><div class="num">${s.declinedResponses}</div><div class="lbl">respostas “não”</div></div>
+      <div class="stat"><div class="num">${s.responses}</div><div class="lbl">respostas no total</div></div>`;
+  }
+
+  function renderList(items) {
+    const list = $('#list');
+    if (!items.length) {
+      list.innerHTML = '<div class="empty">Nenhuma resposta por aqui ainda… 🎠</div>';
+      return;
+    }
+    list.innerHTML = items.map((it) => {
+      const guests = it.guests.length
+        ? `<div class="gs">acompanhantes: ${it.guests.map(esc).join(' · ')}</div>` : '';
+      const badge = it.attending
+        ? `<span class="badge yes">confirmou</span> <span class="badge people">${it.totalPeople} ${it.totalPeople === 1 ? 'pessoa' : 'pessoas'}</span>`
+        : '<span class="badge no">não vai</span>';
+      const when = new Date(it.createdAt.replace(' ', 'T')).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+      return `<div class="item">
+        <div class="who"><div class="nm">${esc(it.name)}</div>${guests}</div>
+        ${badge}
+        <span class="meta">${when}</span>
+        <button class="del" title="Excluir resposta" data-id="${it.id}">✕</button>
+      </div>`;
+    }).join('');
+    list.querySelectorAll('.del').forEach((b) => b.addEventListener('click', async () => {
+      if (!confirm('Excluir esta resposta?')) return;
+      await fetch('/api/admin/rsvps?id=' + b.dataset.id, {
+        method: 'DELETE',
+        headers: { Authorization: 'Bearer ' + token },
+      });
+      load();
+    }));
+  }
+
+  if (token) {
+    // valida o token guardado
+    fetch('/api/admin/rsvps', { headers: { Authorization: 'Bearer ' + token } })
+      .then((r) => { if (r.ok) enter(); else sessionStorage.removeItem('mariah_token'); });
+  }
+</script>
+</body>
+</html>

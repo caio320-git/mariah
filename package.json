@@ -1,0 +1,14 @@
+{
+  "name": "le-cirque-de-mariah",
+  "version": "1.0.0",
+  "description": "Site de confirmação de presença — 1º aniversário da Mariah",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
