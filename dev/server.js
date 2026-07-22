@@ -2,7 +2,9 @@
  * Le Cirque de Mariah — servidor de confirmação de presença (RSVP)
  * Node.js puro (>= 22.5), sem dependências externas. Banco: SQLite embutido.
  *
- * Rodar:   node server.js
+ * Rodar:   node dev/server.js
+ * (fica em dev/ de propósito: um server.js na raiz faria a Vercel
+ *  tratá-lo como função serverless e ignorar public/ + api/)
  * Config:  PORT (padrão 3000) | ADMIN_PASSWORD (padrão "mariah2026")
  */
 const http = require('node:http');
@@ -16,8 +18,8 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'mariah2026';
 const SESSION_SECRET = crypto.randomBytes(32).toString('hex');
 const ADMIN_TOKEN = crypto.createHmac('sha256', SESSION_SECRET).update('admin').digest('hex');
 
-const PUBLIC_DIR = path.join(__dirname, 'public');
-const DATA_DIR = path.join(__dirname, 'data');
+const PUBLIC_DIR = path.join(__dirname, '..', 'public');
+const DATA_DIR = path.join(__dirname, '..', 'data');
 fs.mkdirSync(DATA_DIR, { recursive: true });
 
 const db = new DatabaseSync(path.join(DATA_DIR, 'rsvps.db'));
