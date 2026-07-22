@@ -612,7 +612,7 @@ input::placeholder { color: #b99a9f; }
 /* ============ MOBILE ============ */
 @media (max-width: 860px) {
   :root { --header-h: 56px; }
-  .char-clown { display: none; }
+  .char-clown { height: 18vh; left: -3vw; top: calc(var(--header-h) + 2.5vh); }
   .char-girl  { height: 21vh; right: -3vw; top: calc(var(--header-h) + 4vh); }
   .char-giraffe { height: 34vh; right: -8vw; }
   .char-seal { height: 20vh; left: -4vw; }
