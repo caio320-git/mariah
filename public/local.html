@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Local — Le Cirque de Mariah 🎪</title>
+<meta name="description" content="Como chegar ao 1º aniversário da Mariah — Quintal Araguaia, Freguesia (Jacarepaguá).">
+<link rel="icon" type="image/png" href="/assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Sacramento&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="site-nav">
+    <a href="/">Home</a>
+    <a href="/local" class="active">Local</a>
+    <a href="/admin">Admin</a>
+  </nav>
+</header>
+
+<div class="stage" id="stage" aria-hidden="true">
+  <svg class="bunting" id="bunting" viewBox="0 0 1000 110" preserveAspectRatio="none" height="90"></svg>
+  <div class="char char-clown"><img src="/assets/clown-flag.webp" alt=""></div>
+  <div class="char char-girl"><img src="/assets/girl-hoop.webp" alt=""></div>
+  <div class="char char-seal"><img src="/assets/seal-ball.webp" alt=""></div>
+  <div class="char char-giraffe"><img src="/assets/giraffe.webp" alt=""></div>
+</div>
+
+<main class="wrap">
+  <section class="card location-card">
+    <h2>O picadeiro fica aqui</h2>
+    <p class="location-sub">on vous attend!</p>
+    <p class="venue-when">Domingo, 06 de setembro · 12h às 16h</p>
+    <p class="venue-name">Quintal Araguaia</p>
+    <p class="venue-addr">R. Araguaia, 1470 — Freguesia (Jacarepaguá)<br>Rio de Janeiro – RJ</p>
+    <iframe class="map-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+      title="Mapa — Quintal Araguaia"
+      src="https://maps.google.com/maps?q=Quintal%20Araguaia%2C%20R.%20Araguaia%2C%201470%20-%20Freguesia%20(Jacarepagu%C3%A1)%2C%20Rio%20de%20Janeiro%20-%20RJ&z=16&hl=pt-BR&output=embed"></iframe>
+    <div class="route-buttons">
+      <a class="route-btn route-waze" target="_blank" rel="noopener"
+         href="https://waze.com/ul?q=Quintal%20Araguaia%2C%20Rua%20Araguaia%201470%2C%20Freguesia%20Jacarepagu%C3%A1%2C%20Rio%20de%20Janeiro&navigate=yes">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-8-8 19-2.5-8.5L3 11z"/></svg>
+        Abrir no Waze
+      </a>
+      <a class="route-btn route-gmaps" target="_blank" rel="noopener"
+         href="https://www.google.com/maps/search/?api=1&query=Quintal%20Araguaia%2C%20R.%20Araguaia%2C%201470%20-%20Freguesia%20(Jacarepagu%C3%A1)%2C%20Rio%20de%20Janeiro%20-%20RJ">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 1 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+        Google Maps
+      </a>
+    </div>
+  </section>
+</main>
+
+<p class="footer-note">feito com ♥ para a Mariah</p>
+
+<script src="/scenery.js"></script>
+</body>
+</html>

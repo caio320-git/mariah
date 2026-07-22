@@ -201,7 +201,8 @@ const server = http.createServer(async (req, res) => {
     if (req.method !== 'GET' && req.method !== 'HEAD') {
       res.writeHead(405); return res.end();
     }
-    let filePath = p === '/' ? '/index.html' : (p === '/admin' ? '/admin.html' : p);
+    const ROUTES = { '/': '/index.html', '/admin': '/admin.html', '/local': '/local.html' };
+    let filePath = ROUTES[p] || p;
     filePath = path.normalize(filePath).replace(/^([.][.][/\\])+/, '');
     const abs = path.join(PUBLIC_DIR, filePath);
     if (!abs.startsWith(PUBLIC_DIR)) { res.writeHead(403); return res.end(); }

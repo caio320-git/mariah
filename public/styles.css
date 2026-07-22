@@ -1,0 +1,522 @@
+/* Le Cirque de Mariah — estilos compartilhados */
+:root {
+  --wine: #ab0831;
+  --wine-soft: #93354a;
+  --rose: #e6c9ce;
+  --rose-deep: #d9a7b0;
+  --blue: #bed5e4;
+  --cream: #f6eee0;
+  --paper: #fffdf7;
+  --tan: #c39d76;
+  --ink: #4a3538;
+  --gold: #d4af6a;
+  --header-h: 64px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: var(--ink);
+  background: var(--cream);
+  min-height: 100svh;
+  overflow-x: hidden;
+}
+
+/* ============ MENU SUPERIOR ============ */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  height: var(--header-h);
+  padding: 0 clamp(18px, 5vw, 48px);
+  background: rgba(246, 238, 224, .78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(171, 8, 49, .08);
+}
+.site-nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: clamp(24px, 4vw, 42px);
+}
+.site-nav a {
+  position: relative;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #8a666d;
+  text-decoration: none;
+  padding: 6px 2px;
+  transition: color .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.site-nav a:hover { color: var(--wine); }
+.site-nav a.active { color: var(--wine); }
+.site-nav a.active::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -4px;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--rose-deep);
+}
+
+/* ============ CENÁRIO / ANIMAÇÃO DE FUNDO ============ */
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* estampa aquarelada: ondas azuis + poás vinho (como no guia) */
+.stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='120' viewBox='0 0 170 120'%3E%3Cpath d='M28 -10 q9 15 0 30 t0 30 t0 30 t0 30 t0 30' fill='none' stroke='%23bed5e4' stroke-width='5.5' stroke-linecap='round' opacity='0.55'/%3E%3Cg fill='%23ab0831' opacity='0.28'%3E%3Ccircle cx='106' cy='10' r='3.2'/%3E%3Ccircle cx='106' cy='40' r='3.2'/%3E%3Ccircle cx='106' cy='70' r='3.2'/%3E%3Ccircle cx='106' cy='100' r='3.2'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 170px 120px;
+  opacity: .38;
+}
+
+/* clareira central para a leitura do cartão */
+.stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 62% 55% at 50% 46%, rgba(255, 253, 247, .92) 0%, rgba(255, 253, 247, .55) 45%, rgba(255, 253, 247, 0) 78%);
+}
+
+.char {
+  position: absolute;
+  mix-blend-mode: multiply;
+  filter: saturate(1.02);
+  will-change: transform;
+  user-select: none;
+}
+.char img { height: 100%; width: auto; display: block; }
+
+.char-giraffe { right: max(-34px, -4vw); bottom: -1vh;  height: 58vh; animation: floaty 8s  ease-in-out infinite alternate; }
+.char-seal    { left: -2vw;  bottom: -2vh;  height: 31vh; animation: floaty 7s  1.2s ease-in-out infinite alternate; }
+.char-clown   { left: 1.5vw; top: calc(var(--header-h) + 3vh); height: 36vh; animation: floaty 9s .4s ease-in-out infinite alternate; }
+.char-girl    { right: 3vw;  top: calc(var(--header-h) + 2.5vh); height: 30vh; animation: floaty 8.5s 1.8s ease-in-out infinite alternate; }
+
+@keyframes floaty {
+  from { transform: translateY(0) rotate(-1.2deg); }
+  to   { transform: translateY(-14px) rotate(1.2deg); }
+}
+
+/* estrelas cintilantes */
+.star {
+  position: absolute;
+  width: 18px; height: 18px;
+  opacity: 0;
+  animation: twinkle var(--tw-dur, 4s) var(--tw-delay, 0s) ease-in-out infinite;
+}
+.star svg { width: 100%; height: 100%; display: block; }
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(.5) rotate(-8deg); }
+  50%      { opacity: var(--tw-max, .8); transform: scale(1) rotate(8deg); }
+}
+
+/* balões sobem devagarinho ao fundo */
+.balloon {
+  position: absolute;
+  bottom: -140px;
+  width: var(--b-size, 46px);
+  height: calc(var(--b-size, 46px) * 1.18);
+  border-radius: 50% 50% 50% 50% / 44% 44% 56% 56%;
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255,255,255,.85) 0 12%, rgba(255,255,255,0) 42%),
+    var(--b-color, var(--rose));
+  opacity: .5;
+  animation: rise var(--b-dur, 26s) var(--b-delay, 0s) linear infinite;
+}
+.balloon::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 99%;
+  width: 1.5px; height: 52px;
+  background: rgba(74, 53, 56, .28);
+}
+@keyframes rise {
+  0%   { transform: translateY(0) translateX(0) rotate(-3deg); opacity: 0; }
+  8%   { opacity: .5; }
+  92%  { opacity: .5; }
+  100% { transform: translateY(-118vh) translateX(6vw) rotate(4deg); opacity: 0; }
+}
+
+/* bandeirinhas penduradas no menu */
+.bunting {
+  position: absolute;
+  top: var(--header-h);
+  left: 0;
+  width: 100%;
+  transform-origin: 50% 0;
+  animation: sway 6.5s ease-in-out infinite alternate;
+}
+@keyframes sway {
+  from { transform: rotate(-.6deg); }
+  to   { transform: rotate(.6deg); }
+}
+
+/* ============ ESTRUTURA / CARTÃO ============ */
+.wrap {
+  position: relative;
+  z-index: 1;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--header-h) + clamp(56px, 9vh, 96px)) 18px 46px;
+}
+
+.card {
+  width: 100%;
+  max-width: 440px;
+  background: var(--paper);
+  border-radius: 26px;
+  box-shadow:
+    0 24px 60px -18px rgba(171, 8, 49, .22),
+    0 4px 16px rgba(74, 53, 56, .08);
+  padding: 34px 26px 30px;
+  position: relative;
+}
+/* costura pontilhada, como a bandeira do palhacinho */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border: 1.6px dashed rgba(171, 8, 49, .32);
+  border-radius: 18px;
+  pointer-events: none;
+}
+
+.logo {
+  display: block;
+  width: min(240px, 72%);
+  margin: 0 auto 6px;
+}
+
+.subtitle {
+  font-family: 'Sacramento', cursive;
+  font-size: 1.8rem;
+  color: var(--tan);
+  text-align: center;
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+/* progresso: três estrelinhas */
+.progress {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0 18px;
+}
+.progress .p-star { width: 17px; height: 17px; transition: transform .35s, filter .35s; }
+.progress .p-star path { fill: var(--rose); transition: fill .35s; }
+.progress .p-star.on path { fill: var(--wine); }
+.progress .p-star.on { transform: scale(1.18) rotate(-8deg); }
+
+.step { display: none; animation: stepIn .45s cubic-bezier(.22, 1, .36, 1); }
+.step.active { display: block; }
+@keyframes stepIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+h1, h2 {
+  font-family: 'Abril Fatface', serif;
+  font-weight: 400;
+  color: var(--wine);
+  text-align: center;
+  line-height: 1.15;
+}
+h1 { font-size: 1.7rem; margin-bottom: 10px; }
+h2 { font-size: 1.45rem; margin-bottom: 8px; }
+
+.lead {
+  text-align: center;
+  font-size: .95rem;
+  line-height: 1.65;
+  margin-bottom: 20px;
+  color: #6b5257;
+}
+
+label.field-label {
+  display: block;
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--wine-soft);
+  margin: 0 2px 7px;
+}
+
+input[type="text"], input[type="password"] {
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.05rem;
+  color: var(--ink);
+  background: #fdf7ec;
+  border: 1.6px solid var(--rose);
+  border-radius: 14px;
+  padding: 14px 16px;
+  outline: none;
+  transition: border-color .25s, box-shadow .25s;
+}
+input[type="text"]:focus, input[type="password"]:focus {
+  border-color: var(--wine);
+  box-shadow: 0 0 0 4px rgba(171, 8, 49, .1);
+}
+input::placeholder { color: #b99a9f; }
+
+.btn {
+  display: block;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.02rem;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 15px 22px;
+  margin-top: 16px;
+  transition: transform .18s, box-shadow .18s, background .18s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-primary {
+  background: var(--wine);
+  color: #fff8ee;
+  box-shadow: 0 10px 24px -8px rgba(171, 8, 49, .55);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 28px -8px rgba(171, 8, 49, .6); }
+.btn-primary:active { transform: translateY(0); }
+.btn-outline {
+  background: transparent;
+  color: var(--wine);
+  border: 1.8px solid var(--wine);
+}
+.btn-outline:hover { background: rgba(171, 8, 49, .06); }
+.btn:disabled { opacity: .55; cursor: wait; transform: none; }
+
+.btn-back {
+  display: inline-block;
+  background: none;
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: .85rem;
+  font-weight: 500;
+  color: #a3838a;
+  cursor: pointer;
+  margin: 14px auto 0;
+  text-align: center;
+  width: 100%;
+}
+.btn-back:hover { color: var(--wine); }
+
+/* contador de acompanhantes */
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin: 18px 0 6px;
+}
+.stepper button {
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  border: 1.8px solid var(--wine);
+  background: #fff;
+  color: var(--wine);
+  font-size: 1.7rem;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  line-height: 1;
+  transition: background .2s, transform .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.stepper button:active { transform: scale(.92); background: rgba(171, 8, 49, .08); }
+.stepper .count {
+  font-family: 'Abril Fatface', serif;
+  font-size: 2.6rem;
+  color: var(--wine);
+  min-width: 58px;
+  text-align: center;
+}
+.hint { text-align: center; font-size: .8rem; color: #a3838a; }
+
+.guest-list { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; max-height: 44vh; overflow-y: auto; padding: 2px; }
+
+.review-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 14px 0 6px; }
+.chip {
+  background: var(--rose);
+  color: #7c2b3c;
+  font-size: .9rem;
+  font-weight: 500;
+  border-radius: 999px;
+  padding: 7px 15px;
+}
+.chip.main { background: var(--wine); color: #fff5ec; }
+
+.form-error {
+  display: none;
+  text-align: center;
+  font-size: .85rem;
+  color: var(--wine);
+  background: rgba(171, 8, 49, .08);
+  border-radius: 10px;
+  padding: 9px 12px;
+  margin-top: 12px;
+}
+.form-error.show { display: block; animation: stepIn .3s; }
+
+.success-img { display: block; width: 190px; max-width: 60%; margin: 4px auto 10px; mix-blend-mode: multiply; }
+.success-note {
+  text-align: center;
+  font-family: 'Sacramento', cursive;
+  font-size: 1.7rem;
+  color: var(--tan);
+  margin-top: 12px;
+  line-height: 1.2;
+}
+
+/* ============ LOCALIZAÇÃO ============ */
+.location-card { padding-top: 28px; }
+.location-sub {
+  font-family: 'Sacramento', cursive;
+  font-size: 1.6rem;
+  color: var(--tan);
+  text-align: center;
+  margin-bottom: 8px;
+}
+.venue-when {
+  text-align: center;
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--wine);
+  margin-bottom: 14px;
+}
+.venue-name { text-align: center; font-weight: 600; font-size: 1.02rem; color: var(--wine-soft); }
+.venue-addr { text-align: center; font-size: .86rem; color: #8d6f75; line-height: 1.55; margin: 4px 0 14px; }
+.map-frame {
+  position: relative;
+  z-index: 1; /* acima da costura pontilhada, para o mapa ser clicável */
+  width: 100%;
+  height: 250px;
+  border: none;
+  border-radius: 16px;
+  display: block;
+  box-shadow: 0 6px 18px rgba(74, 53, 56, .12);
+}
+.route-buttons { display: flex; gap: 10px; margin-top: 14px; position: relative; z-index: 1; }
+.route-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: .88rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 12px 10px;
+  transition: transform .18s, box-shadow .18s;
+}
+.route-btn:hover { transform: translateY(-2px); }
+.route-btn svg { width: 17px; height: 17px; flex: none; }
+.route-waze { background: var(--blue); color: #23485f; box-shadow: 0 8px 20px -8px rgba(46, 77, 99, .5); }
+.route-gmaps { background: var(--wine); color: #fff8ee; box-shadow: 0 8px 20px -8px rgba(171, 8, 49, .55); }
+
+.footer-note {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  font-size: .75rem;
+  color: #b39399;
+  padding: 18px 0 26px;
+}
+.footer-note a { color: inherit; }
+
+/* balões clicáveis + estouro */
+.balloon { pointer-events: auto; cursor: pointer; }
+.pop-bit {
+  position: fixed;
+  z-index: 5;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: popFly .65s ease-out forwards;
+}
+@keyframes popFly {
+  from { transform: translate(0, 0) scale(1); opacity: 1; }
+  to   { transform: translate(var(--dx, 0), var(--dy, 0)) scale(.3); opacity: 0; }
+}
+
+/* entrada da aniversariante na celebração 🎉 */
+.mariah-wrap {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 4;
+  pointer-events: none;
+  transform: translate(-50%, 108%);
+  animation: mariahUp 1s .15s cubic-bezier(.32, 1.24, .5, 1) forwards;
+}
+@keyframes mariahUp {
+  to { transform: translate(-50%, 4%); }
+}
+.mariah-wrap img {
+  display: block;
+  height: min(40vh, 380px);
+  width: auto;
+  filter: drop-shadow(0 12px 26px rgba(74, 53, 56, .3));
+  animation: mariahSway 3.6s 1.2s ease-in-out infinite alternate;
+  transform-origin: 50% 100%;
+}
+@keyframes mariahSway {
+  from { transform: rotate(-2deg); }
+  to   { transform: rotate(2deg); }
+}
+
+/* confete */
+.confetti {
+  position: fixed;
+  top: -20px;
+  z-index: 5;
+  pointer-events: none;
+  border-radius: 2px;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  to { transform: translateY(115vh) rotate(720deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .char, .bunting, .star, .balloon { animation: none !important; }
+  .star { opacity: .5; }
+}
+
+/* ============ MOBILE ============ */
+@media (max-width: 860px) {
+  :root { --header-h: 56px; }
+  .char-clown { display: none; }
+  .char-girl  { height: 21vh; right: -3vw; top: calc(var(--header-h) + 4vh); }
+  .char-giraffe { height: 34vh; right: -8vw; }
+  .char-seal { height: 20vh; left: -4vw; }
+  .card { padding: 28px 20px 26px; }
+  h1 { font-size: 1.5rem; }
+}
