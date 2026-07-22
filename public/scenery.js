@@ -36,8 +36,33 @@ window.STAR_PATH = 'M12 1.8l2.9 6.2 6.8.8-5 4.7 1.3 6.7-6-3.4-6 3.4 1.3-6.7-5-4.
     stage.appendChild(s);
   }
 
-  /* ---------- balões (clique para estourar) ---------- */
+  /* ---------- balões: mini game de estourar 🎈 ---------- */
   const balloonColors = ['#e6c9ce', '#bed5e4', '#f0dcc3'];
+  const MAX_BALLOONS = 12;
+  let score = 0;
+  let best = Number(localStorage.getItem('mariah_balloon_best') || 0);
+  let scoreEl = null;
+  let balloonCount = 0;
+
+  // quanto mais pontos, mais rápido: 1.0 → 0.25 do tempo original
+  function speedFactor() { return Math.max(0.25, 1 - score * 0.045); }
+
+  function updateScore() {
+    if (!scoreEl) {
+      scoreEl = document.createElement('div');
+      scoreEl.className = 'balloon-score';
+      document.body.appendChild(scoreEl);
+    }
+    if (score > best) {
+      best = score;
+      try { localStorage.setItem('mariah_balloon_best', String(best)); } catch {}
+    }
+    scoreEl.innerHTML = `🎈 <strong>${score}</strong>` +
+      (best > score ? ` <span class="best">recorde: ${best}</span>` : (score >= 10 ? ' <span class="best">novo recorde!</span>' : ''));
+    scoreEl.classList.remove('bump');
+    void scoreEl.offsetWidth;
+    scoreEl.classList.add('bump');
+  }
 
   function burst(x, y, color) {
     for (let i = 0; i < 10; i++) {
@@ -54,16 +79,23 @@ window.STAR_PATH = 'M12 1.8l2.9 6.2 6.8.8-5 4.7 1.3 6.7-6-3.4-6 3.4 1.3-6.7-5-4.
   }
 
   function spawnBalloon(initialDelay) {
+    if (balloonCount >= MAX_BALLOONS) return;
+    balloonCount++;
     const b = document.createElement('div');
     b.className = 'balloon';
     const color = balloonColors[Math.floor(Math.random() * balloonColors.length)];
     b.style.cssText = `left:${5 + Math.random() * 88}%; --b-size:${34 + Math.random() * 26}px;` +
-      `--b-color:${color}; --b-dur:${22 + Math.random() * 16}s; --b-delay:${initialDelay}s;`;
-    b.addEventListener('pointerdown', (e) => {
+      `--b-color:${color}; --b-dur:${(22 + Math.random() * 16) * speedFactor()}s; --b-delay:${initialDelay}s;`;
+    b.addEventListener('pointerdown', () => {
       const r = b.getBoundingClientRect();
       burst(r.left + r.width / 2, r.top + r.height / 2, color);
       b.remove();
-      setTimeout(() => spawnBalloon(0), 1200 + Math.random() * 2500);
+      balloonCount--;
+      score++;
+      updateScore();
+      // a cada 4 estouros entra um balão extra na roda
+      if (score % 4 === 0) spawnBalloon(0);
+      setTimeout(() => spawnBalloon(0), (1200 + Math.random() * 2500) * speedFactor());
     });
     stage.appendChild(b);
   }

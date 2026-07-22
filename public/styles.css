@@ -180,7 +180,9 @@ body {
   align-items: center;
   justify-content: center;
   padding: calc(var(--header-h) + clamp(56px, 9vh, 96px)) 18px 46px;
+  pointer-events: none; /* deixa os cliques chegarem aos balões; o card reativa */
 }
+.card { pointer-events: auto; }
 
 .card {
   width: 100%;
@@ -449,8 +451,41 @@ input::placeholder { color: #b99a9f; }
   font-size: .75rem;
   color: #b39399;
   padding: 18px 0 26px;
+  pointer-events: none;
 }
 .footer-note a { color: inherit; }
+
+/* placar do mini game dos balões */
+.balloon-score {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--wine);
+  color: #fff8ee;
+  font-family: 'Poppins', sans-serif;
+  font-size: .92rem;
+  border-radius: 999px;
+  padding: 10px 22px;
+  box-shadow: 0 12px 28px -8px rgba(171, 8, 49, .6);
+  pointer-events: none;
+  white-space: nowrap;
+  animation: scoreIn .55s cubic-bezier(.34, 1.56, .64, 1);
+}
+.balloon-score strong { font-family: 'Abril Fatface', serif; font-weight: 400; font-size: 1.15rem; }
+.balloon-score .best { font-size: .74rem; opacity: .85; }
+@keyframes scoreIn {
+  from { transform: translateX(-50%) translateY(90px); opacity: 0; }
+  to   { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+.balloon-score.bump { animation: scoreBump .3s ease-out; }
+@keyframes scoreBump {
+  40% { transform: translateX(-50%) scale(1.16); }
+}
 
 /* balões clicáveis + estouro */
 .balloon { pointer-events: auto; cursor: pointer; }
