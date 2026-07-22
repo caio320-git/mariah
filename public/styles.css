@@ -497,7 +497,7 @@ input::placeholder { color: #b99a9f; }
 .flu-shield {
   position: absolute;
   left: 61.5%; /* centralizado onde ficava o coração */
-  top: 4%;
+  top: 6%;     /* respiro igual acima e abaixo dentro da bandeira */
   width: 16%;
   z-index: 2;
   pointer-events: none;

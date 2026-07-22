@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Site de confirmação de presença — 1º aniversário da Mariah",
   "scripts": {
-    "start": "node dev/server.js"
+    "local": "node dev/server.js"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.1"
