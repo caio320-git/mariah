@@ -662,15 +662,24 @@ input::placeholder { color: #b99a9f; }
     text-align: center;
     margin-bottom: 20px;
   }
-  .fz-row { display: flex; justify-content: center; margin-bottom: 14px; }
+  .fz-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: clamp(6px, 4vw, 22px);
+    margin-bottom: 18px;
+  }
   .fz-figure {
     position: relative;
-    height: 30vh;
-    max-height: 220px;
+    height: 26vh;
+    max-height: 190px;
+    flex: 0 1 auto;
+    min-width: 0;
     mix-blend-mode: multiply;
     filter: saturate(1.02);
     user-select: none;
   }
+  .fz-figure img { max-width: 46vw; }
   .fz-figure img { height: 100%; width: auto; display: block; }
   .fz-balloons {
     position: relative;
