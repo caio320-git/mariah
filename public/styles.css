@@ -505,7 +505,10 @@ input::placeholder { color: #b99a9f; }
   animation: shieldPop .55s cubic-bezier(.34, 1.56, .64, 1);
   filter: drop-shadow(0 2px 4px rgba(74, 53, 56, .25));
 }
-.flu-shield img, .flu-shield svg { width: 100%; height: auto; display: block; }
+/* !important: qualquer .fz-figure img / .char img genérico tem a mesma
+   especificidade e, se declarado depois, venceria por ordem — garantindo
+   aqui que o escudo sempre respeita o tamanho do próprio overlay. */
+.flu-shield img, .flu-shield svg { width: 100% !important; height: auto !important; display: block; }
 @keyframes shieldPop {
   from { transform: scale(0) rotate(-14deg); }
   to   { transform: scale(1) rotate(0); }
@@ -539,7 +542,7 @@ input::placeholder { color: #b99a9f; }
   pointer-events: none;
   animation: dogRun 2s .12s ease-in forwards;
 }
-.dog-run img { width: 100%; display: block; }
+.dog-run img { width: 100% !important; height: auto !important; display: block; }
 @keyframes dogRun {
   0%   { transform: translate(0, 0); }
   16%  { transform: translate(3%, -16%) rotate(-6deg); }
@@ -619,4 +622,60 @@ input::placeholder { color: #b99a9f; }
   .wrap { padding-left: 7vw; padding-right: 7vw; }
   .card { padding: 28px 20px 26px; }
   h1 { font-size: 1.5rem; }
+
+  /* Na página de confirmação o card pode crescer (lista de convidados) e
+     cobre os personagens fixos do canto — eggs vivem na .fun-zone abaixo. */
+  body.page-rsvp .char-clown,
+  body.page-rsvp .char-girl { display: none; }
+}
+
+/* ============ FUN ZONE (só no mobile, página de confirmação) ============ */
+.scroll-hint, .fun-zone { display: none; }
+
+@media (max-width: 860px) {
+  .scroll-hint {
+    display: block;
+    text-align: center;
+    font-size: .8rem;
+    color: #b39399;
+    margin-top: 28px;
+    animation: hintBounce 2.2s ease-in-out infinite;
+  }
+  @keyframes hintBounce {
+    0%, 100% { transform: translateY(0); opacity: .65; }
+    50%      { transform: translateY(6px); opacity: 1; }
+  }
+
+  body.page-rsvp .fun-zone {
+    display: block;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 440px;
+    margin: 10px auto 0;
+    padding: 6px 0 130px;
+  }
+  .fun-zone-title {
+    font-family: 'Sacramento', cursive;
+    font-size: 1.55rem;
+    color: var(--tan);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .fz-row { display: flex; justify-content: center; margin-bottom: 14px; }
+  .fz-figure {
+    position: relative;
+    height: 30vh;
+    max-height: 220px;
+    mix-blend-mode: multiply;
+    filter: saturate(1.02);
+    user-select: none;
+  }
+  .fz-figure img { height: 100%; width: auto; display: block; }
+  .fz-balloons {
+    position: relative;
+    width: 100%;
+    height: 42vh;
+    min-height: 300px;
+  }
 }

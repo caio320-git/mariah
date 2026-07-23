@@ -16,7 +16,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Sacramento&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/styles.css">
 </head>
-<body>
+<body class="page-rsvp">
 
 <header class="site-header">
   <nav class="site-nav">
@@ -53,7 +53,7 @@
     <!-- PASSO 2: vai ou não vai -->
     <section class="step" data-step="attend">
       <h2 id="attend-title">Podemos contar com você?</h2>
-      <p class="lead">A função vai começar… e a primeira fileira é sua!</p>
+      <p class="lead">Guardamos um lugar na primeira fila só esperando por você. 🎪</p>
       <button class="btn btn-primary" id="btn-yes">Sim, eu vou! 🎪</button>
       <button class="btn btn-outline" id="btn-no">Infelizmente não vou conseguir</button>
       <button class="btn-back" data-back="name">← voltar</button>
@@ -117,7 +117,20 @@
 
     <div class="form-error" id="form-error" role="alert"></div>
   </div>
+
+  <p class="scroll-hint" aria-hidden="true">✨ role pra baixo pra brincar ✨</p>
 </main>
+
+<section class="fun-zone" aria-hidden="true">
+  <p class="fun-zone-title">Enquanto isso, no picadeiro…</p>
+  <div class="fz-row">
+    <div class="fz-figure" data-figure="clown"><img src="/assets/clown-flag.webp" alt=""></div>
+  </div>
+  <div class="fz-row">
+    <div class="fz-figure" data-figure="girl"><img src="/assets/girl-hoop.webp" alt=""></div>
+  </div>
+  <div class="fz-balloons" id="fz-balloons"></div>
+</section>
 
 <p class="footer-note">feito com ♥ para a Mariah</p>
 

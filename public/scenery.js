@@ -37,6 +37,13 @@ window.STAR_PATH = 'M12 1.8l2.9 6.2 6.8.8-5 4.7 1.3 6.7-6-3.4-6 3.4 1.3-6.7-5-4.
   }
 
   /* ---------- balões: mini game de estourar 🎈 ---------- */
+  // no mobile da página de confirmação, os balões nascem na .fun-zone
+  // (sempre acessível por scroll) em vez do palco fixo, que fica coberto
+  // pelo card quando ele cresce (lista de convidados etc.)
+  const isMobile = window.matchMedia('(max-width: 860px)').matches;
+  const fzBalloons = document.getElementById('fz-balloons');
+  const balloonHost = (isMobile && fzBalloons) ? fzBalloons : stage;
+
   const balloonColors = ['#e6c9ce', '#bed5e4', '#f0dcc3'];
   const MAX_BALLOONS = 12;
   let score = 0;
@@ -97,20 +104,21 @@ window.STAR_PATH = 'M12 1.8l2.9 6.2 6.8.8-5 4.7 1.3 6.7-6-3.4-6 3.4 1.3-6.7-5-4.
       if (score % 4 === 0) spawnBalloon(0);
       setTimeout(() => spawnBalloon(0), (1200 + Math.random() * 2500) * speedFactor());
     });
-    stage.appendChild(b);
+    balloonHost.appendChild(b);
   }
 
   for (let i = 0; i < 6; i++) spawnBalloon(-(Math.random() * 30));
 
-  /* ---------- easter egg 1: o coração do palhaço é tricolor 🇭🇺 ---------- */
-  const clownChar = document.querySelector('.char-clown');
-  if (clownChar) {
-    ['/assets/clown-noheart.webp', '/assets/flu.webp'].forEach((s) => { const i = new Image(); i.src = s; });
+  /* ---------- easter egg 1: o coração do palhaço é tricolor 🇭🇺 ----------
+     Roda para toda instância do palhaço (o palco fixo do desktop e a
+     cópia da .fun-zone no mobile), cada uma com seu próprio estado. */
+  ['/assets/clown-noheart.webp', '/assets/flu.webp'].forEach((s) => { const i = new Image(); i.src = s; });
+
+  function initClownEgg(clownChar) {
     const clownImg = clownChar.querySelector('img');
     const clownSpot = document.createElement('div');
     clownSpot.className = 'egg-hotspot';
     clownSpot.style.cssText = 'inset:0;';
-    clownSpot.title = '…';
     let fluOn = false, shieldEl = null;
     clownSpot.addEventListener('pointerdown', () => {
       fluOn = !fluOn;
@@ -127,11 +135,13 @@ window.STAR_PATH = 'M12 1.8l2.9 6.2 6.8.8-5 4.7 1.3 6.7-6-3.4-6 3.4 1.3-6.7-5-4.
     });
     clownChar.appendChild(clownSpot);
   }
+  document.querySelectorAll('.char-clown, [data-figure="clown"]').forEach(initClownEgg);
 
-  /* ---------- easter egg 2: a cachorrinha e a bolinha 🎾 ---------- */
-  const girlChar = document.querySelector('.char-girl');
-  if (girlChar) {
-    ['/assets/girl-nodog.webp', '/assets/dog.webp'].forEach((s) => { const i = new Image(); i.src = s; });
+  /* ---------- easter egg 2: a cachorrinha e a bolinha 🎾 ----------
+     Mesma ideia: funciona em qualquer instância (palco fixo ou .fun-zone). */
+  ['/assets/girl-nodog.webp', '/assets/dog.webp'].forEach((s) => { const i = new Image(); i.src = s; });
+
+  function initDogEgg(girlChar) {
     const girlImg = girlChar.querySelector('img');
     // caixa da cachorrinha dentro da ilustração (percentuais medidos)
     const BOX = { left: 3.7, top: 50.1, w: 39.4, h: 30.2 };
@@ -165,6 +175,7 @@ window.STAR_PATH = 'M12 1.8l2.9 6.2 6.8.8-5 4.7 1.3 6.7-6-3.4-6 3.4 1.3-6.7-5-4.
     });
     girlChar.appendChild(dogSpot);
   }
+  document.querySelectorAll('.char-girl, [data-figure="girl"]').forEach(initDogEgg);
 
   /* gatilho de teste: /#egg dispara os dois */
   if (location.hash === '#egg') {
