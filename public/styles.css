@@ -654,6 +654,9 @@ input::placeholder { color: #b99a9f; }
     max-width: 440px;
     margin: 10px auto 0;
     padding: 6px 0 130px;
+    /* opaco para realmente cobrir a girafa/foca fixas do fundo — sem
+       isso elas "vazam" por trás, já que o resto da fun-zone é transparente */
+    background: var(--cream);
   }
   .fun-zone-title {
     font-family: 'Sacramento', cursive;
